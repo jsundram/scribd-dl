@@ -100,13 +100,16 @@ for pageIndex in ${!pages[@]}; do
 	fi
 
 	rm "$WORKINGDIR/$file.jpg"
-	echo "$(($(stat --printf '%s' "$WORKINGDIR/$file.pdf") / 1024)) KB."
+    # make this work on osx 10.8
+	echo "$(($(stat -f '%z' "$WORKINGDIR/$file.pdf") / 1024)) KB."
+	#echo "$(($(stat --printf '%s' "$WORKINGDIR/$file.pdf") / 1024)) KB."
 done
 
 printf 'Combining all PDF files to one file... '
 pdftk "$WORKINGDIR/"*".pdf" cat output "$WORKINGDIR/$filename.pdf"
 mv "$WORKINGDIR/$filename.pdf" "$filename.pdf"
-echo "$(($(stat --printf '%s' "$filename.pdf") / 1024)) KB."
+echo "$(($(stat -f '%z' "$filename.pdf") / 1024)) KB."
+#echo "$(($(stat --printf '%s' "$filename.pdf") / 1024)) KB."
 
 clean-up
 
